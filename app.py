@@ -55,41 +55,48 @@ def summary_report():
 
 def process_department_file(df, output_path):
     """
-    Processes a DataFrame, writes it to Excel, fills department header rows with yellow,
+    Processes a DataFrame, removes only the 'Unnamed' headers (not columns),
+    writes to Excel, fills department header rows with yellow,
     and adds a COUNT column with the number of rows for each department.
     """
+    # Remove 'Unnamed' headers from columns
+    df.columns = [col if not str(col).startswith('Unnamed') else '' for col in df.columns]
+
+    # Add COUNT column if not present
+    if 'COUNT' not in df.columns:
+        df['COUNT'] = ''
+
     df.to_excel(output_path, index=False)
     wb = load_workbook(output_path)
     ws = wb.active
 
-
     yellow_fill = PatternFill(start_color="FFFF00", end_color="FFFF00", fill_type="solid")
 
     for row in ws.iter_rows(min_row=2, max_row=ws.max_row):
-     for cell in row:
-        if cell.value and str(cell.value).startswith("Department:"):
-            # Fill the row yellow
-            for c in row:
-                c.fill = yellow_fill
-            count = 0
-            current_row_idx = cell.row + 1
-            while current_row_idx <= ws.max_row:
-                next_row = ws[current_row_idx]
-                found_next_header = False
-                for next_cell in next_row:
-                    if next_cell.value and str(next_cell.value).startswith("Department:"):
-                        found_next_header = True
+        for cell in row:
+            if cell.value and str(cell.value).startswith("Department:"):
+                # Fill the row yellow
+                for c in row:
+                    c.fill = yellow_fill
+                count = 0
+                current_row_idx = cell.row + 1
+                while current_row_idx <= ws.max_row:
+                    next_row = ws[current_row_idx]
+                    found_next_header = False
+                    for next_cell in next_row:
+                        if next_cell.value and str(next_cell.value).startswith("Department:"):
+                            found_next_header = True
+                            break
+                    if found_next_header:
                         break
-                if found_next_header:
-                    break
-                # Count if column 1 (index 0) is a number
-                first_cell = next_row[0]
-                if isinstance(first_cell.value, (int, float)) and first_cell.value != '':
-                    count += 1
-                current_row_idx += 1
-            # Write the count in the last column of the header row
-            ws.cell(row=cell.row, column=ws.max_column, value=f'Count: {count}')
-            break  # Only process once per header row
+                    # Count if column 1 (index 0) is a number
+                    first_cell = next_row[0]
+                    if isinstance(first_cell.value, (int, float)) and first_cell.value != '':
+                        count += 1
+                    current_row_idx += 1
+                # Write the count in the last column of the header row
+                ws.cell(row=cell.row, column=ws.max_column, value=count)
+                break  # Only process once per header row
     wb.save(output_path)
 
 @app.route('/process_present_leave_late', methods=['POST'])
