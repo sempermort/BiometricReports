@@ -61,54 +61,34 @@ def process_department_file(df, output_path):
     df.to_excel(output_path, index=False)
     wb = load_workbook(output_path)
     ws = wb.active
-    # Get the max column in the sheet
-    max_col = ws.max_column
 
-    # Try to find a column that already has 'COUNT' in row 1
-    count_col_idx = None
-    for col in range(1, max_col + 1):
-        if ws.cell(row=1, column=col).value == 'COUNT':
-            count_col_idx = col
-            break
-
-    # If not found, add it at the next available column
-    if count_col_idx is None:
-        count_col_idx = max_col + 1
-        ws.cell(row=1, column=count_col_idx, value='COUNT')
-
-
-    # Find the index of the 'Department' column
-    dept_col_idx = None
-    for idx, cell in enumerate(ws[2]):
-        if cell.value == 'Department':
-            dept_col_idx = idx
-            break
 
     yellow_fill = PatternFill(start_color="FFFF00", end_color="FFFF00", fill_type="solid")
 
-    for row in ws.iter_rows(min_row=3, max_row=ws.max_row):
+    for row in ws.iter_rows(min_row=2, max_row=ws.max_row):
      for cell in row:
         if cell.value and str(cell.value).startswith("Department:"):
-            for cell in row:
-                cell.fill = yellow_fill
-            dept_name = cell.value.replace("Department: ", "")
+            # Fill the row yellow
+            for c in row:
+                c.fill = yellow_fill
             count = 0
-            # Start counting from the next row
             current_row_idx = cell.row + 1
             while current_row_idx <= ws.max_row:
                 next_row = ws[current_row_idx]
                 found_next_header = False
                 for next_cell in next_row:
-                     if next_cell.value and str(next_cell.value).startswith("Department:"):
+                    if next_cell.value and str(next_cell.value).startswith("Department:"):
                         found_next_header = True
                         break
                 if found_next_header:
                     break
-                if any(str(nc.value) == dept_name for nc in next_row if nc.value):
+                # Count if column 1 (index 0) is a number
+                first_cell = next_row[0]
+                if isinstance(first_cell.value, (int, float)) and first_cell.value != '':
                     count += 1
                 current_row_idx += 1
-            #set the count in the COUNT column (e.g., last column)
-            ws.cell(row=cell.row, column=ws.max_column, value=count)
+            # Write the count in the last column of the header row
+            ws.cell(row=cell.row, column=ws.max_column, value=f'Count: {count}')
             break  # Only process once per header row
     wb.save(output_path)
 
