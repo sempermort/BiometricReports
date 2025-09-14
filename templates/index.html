@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Employee Attendance Processing</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<body>
+    <div class="container mt-5">
+        <div class="row">
+            <div class="col-md-8 offset-md-2">
+                <h1 class="text-center mb-4">Employee Attendance Processing</h1>
+
+                <!-- Navigation -->
+                <ul class="nav nav-tabs" id="myTab" role="tablist">
+                        <li class="nav-item" role="presentation">
+                        <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home"
+                            type="button" role="tab">Present, LateIn and Leave</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link " id="missing-tab" data-bs-toggle="tab" data-bs-target="#missing"
+                            type="button" role="tab">Missing person</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile"
+                            type="button" role="tab">Summary Report</button>
+                    </li>
+                </ul>
+                <div class="tab-content mt-3" id="myTabContent">
+                    <div class="tab-pane fade show active" id="home" role="tabpanel">
+                        <div class="card">
+                            <div class="card-header">
+                                <h3>Upload Files</h3>
+                            </div>
+                            <div class="card-body">
+                                <form action="/process_present_leave_late" method="POST" enctype="multipart/form-data">
+                                    <div class="mb-3">
+                                        <label for="employee_file" class="form-label">First and last (deparment wise xlsx)</label>
+                                        <input type="file" class="form-control" id="employee_file" name="present_file_dw"
+                                            accept=".xlsx" required>
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label for="first_last_file" class="form-label">Leave (deparment wise xlsx)</label>
+                                        <input type="file" class="form-control" id="first_last_file"
+                                            name="Leave_file_dw" accept=".xlsx" required>
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label for="leave_report_file" class="form-label">Late In (deparment wise xlsx)</label>
+                                        <input type="file" class="form-control" id="leave_report_file"
+                                            name="late_in_file_dw" accept=".xlsx" required>
+                                    </div>
+
+                                    <div class="d-grid">
+                                        <button type="submit" class="btn btn-primary btn-lg">Process Files</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+
+                        <div class="mt-4">
+                            <h4>Instructions:</h4>
+                            <ol>
+                                <li>Upload the Employee file (CSV format)</li>
+                                <li>Upload the First & Last report (CSV format)</li>
+                                <li>Upload the Leave Report (CSV format)</li>
+                                <li>Click "Process Files" to generate reports</li>
+                            </ol>
+                        </div>
+                    </div>
+                     <div class="tab-pane fade  " id="missing" role="tabpanel">
+                        <div class="card">
+                            <div class="card-header">
+                                <h3>Upload Files</h3>
+                            </div>
+                            <div class="card-body">
+                                <form action="/process_missing" method="POST" enctype="multipart/form-data">
+                                    <div class="mb-3">
+                                        <label for="employee_file" class="form-label">Employee File (CSV)</label>
+                                        <input type="file" class="form-control" id="employee_file" name="employee_file"
+                                            accept=".csv" required>
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label for="first_last_file" class="form-label">First & Last Report
+                                            (CSV)</label>
+                                        <input type="file" class="form-control" id="first_last_file"
+                                            name="first_last_file" accept=".csv" required>
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label for="leave_report_file" class="form-label">Leave Report (CSV)</label>
+                                        <input type="file" class="form-control" id="leave_report_file"
+                                            name="leave_report_file" accept=".csv" required>
+                                    </div>
+
+                                    <div class="d-grid">
+                                        <button type="submit" class="btn btn-primary btn-lg">Process Files</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+
+                        <div class="mt-4">
+                            <h4>Instructions:</h4>
+                            <ol>
+                                <li>Upload the Employee file (CSV format)</li>
+                                <li>Upload the First & Last report (CSV format)</li>
+                                <li>Upload the Leave Report (CSV format)</li>
+                                <li>Click "Process Files" to generate reports</li>
+                            </ol>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="profile" role="tabpanel">
+                        <div class="card">
+                            <div class="card-header">
+                                <h3>Upload Files</h3>
+                            </div>
+                            <div class="card-body">
+                                <form action="/process_summary_report" method="POST" enctype="multipart/form-data">
+                                    <div class="mb-3">
+                                        <label for="employee_file" class="form-label">Employee File (xlsx)</label>
+                                        <input type="file" class="form-control" id="employee_file"
+                                            name="employee_file_excel" accept=".xlsx" required>
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label for="first_last_file" class="form-label">First & Last Report
+                                            (xlsx)</label>
+                                        <input type="file" class="form-control" id="first_last_file_excel"
+                                            name="first_last_file_excel" accept=".xlsx" required>
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label for="leave_report_file" class="form-label">Leave Report (xlsx)</label>
+                                        <input type="file" class="form-control" id="leave_report_file"
+                                            name="leave_report_file_excel" accept=".xlsx" required>
+                                    </div>
+
+                                    <div class="d-grid">
+                                        <button type="submit" class="btn btn-primary btn-lg">Process Files</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+
+                        <div class="mt-4">
+                            <h4>Instructions:</h4>
+                            <ol>
+                                <li>Upload the Employee file (xlsx format)</li>
+                                <li>Upload the First & Last report (xlsx format)</li>
+                                <li>Upload the Leave Report (xlsx format)</li>
+                                <li>Click "Process Files" to generate reports</li>
+                            </ol>
+                        </div>
+                    </div>
+
+                </div>
+             <div class="container mt-5">
+                <!-- Flash messages -->
+                <!-- {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                    {% for message in messages %} -->
+                    <!-- <div class="alert alert-danger" role="alert">
+                        {{ message }}
+                    </div> -->
+                    <!-- {% endfor %}
+                {% endif %}
+                {% endwith %} -->
+                <!-- ...rest of your content... -->
+            </div>
+
+
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>

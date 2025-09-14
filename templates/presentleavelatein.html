@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Processing Results</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container mt-5">
+        <div class="row">
+            <div class="col-md-8 offset-md-2">
+                <h1 class="text-center mb-4">Processing Results</h1>          
+                            
+                <!-- Tab Content -->
+                <div class="container" >                            
+                    
+                    <!-- Summary Report Tab -->
+                    <div  id="summary"  >
+                        <div class="card mt-4">
+                            <div class="card-header">
+                                <h3>Present Leave LateIn Report</h3>
+                            </div>
+                            <div class="card-body">
+                                <p>This report summarizes attendance data by department.</p>
+                            <div class="d-flex "> 
+                                <a href="{{ url_for('download_file', filename='leave_records_report.xlsx') }}" class="btn btn-primary mx-2">Download Leave Report</a>
+                                <a href="{{ url_for('download_file', filename='present_records_report.xlsx') }}" class="btn btn-primary mx-2">Download Present Report</a>
+                                <a href="{{ url_for('download_file', filename='latein_records_report.xlsx') }}" class="btn btn-primary mx-2">Download Late In Report</a>
+                            </div>
+                                <!-- Summary Report Details -->
+                                <div class="mt-4">
+                                    <h4>Summary Report Information</h4>
+                                    <p>The summary report provides an overview of attendance by department, including:</p>
+                                    <ul>
+                                        <li>Total employee count per department</li>
+                                        <li>Present employees per department</li>
+                                        <li> employees per department</li>
+                                        <li>Employees on leave per department</li>
+                                    </ul>
+                                    <p>To generate this report, the system processes data from three sources:</p>
+                                    <ol>
+                                        <li>Employee database file</li>
+                                        <li>First & Last report</li>
+                                        <li>Leave report</li>
+                                    </ol>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="d-grid gap-2 d-md-flex justify-content-md-center mt-4">
+                    <a href="/" class="btn btn-secondary btn-lg">Process More Files</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
